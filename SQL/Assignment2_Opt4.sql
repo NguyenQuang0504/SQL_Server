@@ -103,6 +103,7 @@ SELECT AVG(ProductInventory.Quantity) AS TheAVG  FROM Production.ProductInventor
 SELECT AVG(Production.ProductInventory.Quantity)  ,ProductInventory.Shelf, ProductID FROM Production.ProductInventory GROUP BY ProductInventory.Shelf, ProductID, LocationID HAVING ProductInventory.Shelf != 'N/A' AND LocationID = 10
 
 --Question 10 Chúng tôi muốn biết số lượng thành viên (hàng) và giá niêm yết trung bình trong bảng Sản phẩm. Chúng tôi không quan tâm đến bất kỳ hàng nào có Màu và Lớp là rỗng (TRONG đó Lớp KHÔNG ĐỦ VÀ Màu KHÔNG ĐỦ).
-SELECT Product.Class, Product.Color, AVG(Product.ListPrice), COUNT(Product.Class) FROM Production.Product GROUP BY GROUPING SETS(Product.Class, Product.Color, ProductID) HAVING Color IS NOT NULL OR Class IS NOT NULL
+SELECT Product.Class, Product.Color, AVG(Product.ListPrice), COUNT(Product.Class) FROM Production.Product GROUP BY GROUPING SETS(Product.Class, Product.Color, ProductID) HAVING Color IS NOT NULL OR Class IS NOT NULL 
 
 --Question 11 Sửa câu query
+SELECT ProductSubcategoryID , COUNT(Name) as Counted, GROUPING(ProductSubcategoryID) AS totalGrand FROM Production.Product GROUP BY ROLLUP (ProductSubcategoryID) ORDER BY ProductSubcategoryID
