@@ -68,11 +68,11 @@ INSERT BanHang(MaNV, MaSP, SoLuong) VALUES
 
 --Question 1
 INSERT NhanVien VALUES 
-('NV01', N'Nguyễn Chí Phèo', 'Male', N'Nam Định', 18),
-('NV02', N'Nguyễn Thị Nở', 'Female', N'Nam Định', 17),
-('NV03', N'Nguyễn Văn Quang', 'Male', N'Huế', 22),
-('NV04', N'Dương Thị Thúy', 'Female', N'Huế', 22),
-('NV05', N'Trần Thị Yến', 'Female', N'Kon Tum', 20)
+('NV011', N'Nguyễn Chí Phèo', 'Male', N'Nam Định', 36),
+('NV07', N'Nguyễn Thị Nở', 'Female', N'Nam Định', 19),
+('NV08', N'Nguyễn Văn Quang', 'Male', N'Huế', 22),
+('NV09', N'Dương Thị Thúy', 'Female', N'Huế', 25),
+('NV010', N'Trần Thị Yến', 'Female', N'Kon Tum', 28)
 GO 
 
 -- Question 2 Delete Employee Female live Kon Tum
@@ -135,11 +135,12 @@ SELECT SanPham.MaLoaiSP FROM SanPham INNER JOIN BanHang ON SanPham.MaSP = BanHan
 )
 
 -- Question 17 Liệt kê tên của nhân viên, nếu trùng thì hiển thị 1 lần
-SELECT NhanVien.HoTenNV FROM NhanVien GROUP BY HoTenNV
+SELECT DISTINCT NhanVien.HoTenNV FROM NhanVien
 
 --Question 18 Hãy liệt kê MaNV, TênNV, Quê Quán của tất cả nhân viên, nếu bạn nào chưa có quê quán thì mục quê quán sẽ hiển thị là 'Cõi trên xuống'
 SELECT NhanVien.MaNV, NhanVien.HoTenNV, COALESCE(NhanVien.QueQuan, N'Cõi trên xuống') AS QueQuan FROM NhanVien 
 SELECT NhanVien.MaNV, NhanVien.HoTenNV, ISNULL(NhanVien.QueQuan, N'Cõi trên xuống') AS QueQuan FROM NhanVien 
+-- COALESCE thì có thể dùng với nhiều thuộc tính 
 
 -- Question 19 Hãy liệt kê 5 nhân viên có tuổi đời cao nhất trong công ty
 SELECT TOP 5 WITH TIES * FROM NhanVien ORDER BY Tuoi DESC
@@ -148,3 +149,34 @@ SELECT TOP 5 WITH TIES * FROM NhanVien ORDER BY Tuoi DESC
 SELECT * FROM NhanVien WHERE Tuoi BETWEEN 25 AND 35
 
 
+-- BT2
+--Question 1Liệt kê mã loại sản phẩm và số lượng sản phẩm của từng loại sản phẩm
+SELECT SanPham.MaLoaiSP, COUNT(SanPham.MaLoaiSP) FROM SanPham INNER JOIN LoaiSP ON SanPham.MaLoaiSP = LoaiSP.MaLoaiSP GROUP BY(SanPham.MaLoaiSP)
+
+-- Question 2Liệt kê mã nhân viên, họ tên nhân viên và mã sản phẩm của những sản phẩm mà nhân viên đó đã bán
+SELECT NhanVien.MaNV, NhanVien.HoTenNV, SanPham.MaSP FROM NhanVien INNER JOIN BanHang ON NhanVien.MaNV = BanHang.MaNV INNER JOIN SanPham ON BanHang.MaSP = SanPham.MaSP ORDER BY NhanVien.MaNV
+
+-- Question 3 Liệt kê mã nhân viên, họ tên nhân viên và mã sản phẩm của những sản phẩm mà nhân viên đó đã bán
+SELECT NhanVien.MaNV, NhanVien.HoTenNV, SanPham.MaSP FROM NhanVien LEFT JOIN BanHang ON NhanVien.MaNV = BanHang.MaNV LEFT JOIN SanPham ON BanHang.MaSP = SanPham.MaSP ORDER BY NhanVien.MaNV
+
+--Question 4 Liệt kê mã sản phẩm, tên sản phẩm, mã loại sản phẩm, tên loại sản phẩm của tất cả các sản phẩm hiện có
+SELECT SanPham.MaSP, SanPham.TenSP, LoaiSP.MaLoaiSP, LoaiSP.TenLoaiSP FROM SanPham INNER JOIN LoaiSP ON SanPham.MaLoaiSP = LoaiSP.MaLoaiSP
+
+--Question 5 Liệt kê những nhân viên đã từng bán được ít nhất 10 sản phẩm
+SELECT DISTINCT NhanVien.MaNV, NhanVien.HoTenNV FROM NhanVien INNER JOIN BanHang ON NhanVien.MaNV = BanHang.MaNV INNER JOIN SanPham ON BanHang.MaSP = SanPham.MaSP GROUP BY NhanVien.MaNV, NhanVien.HoTenNV  HAVING SUM(BanHang.SoLuong) >=10 ORDER BY NhanVien.MaNV
+
+--Query 6 Liệt kê các loại sản phẩm có ít nhất 20 sản phẩm, ngoại trừ loại sản phẩm: Kem dưỡng da
+SELECT LoaiSP.MaLoaiSP, LoaiSP.TenLoaiSP FROM LoaiSP INNER JOIN SanPham ON SanPham.MaLoaiSP = LoaiSP.MaLoaiSP GROUP BY LoaiSP.MaLoaiSP, LoaiSP.TenLoaiSP HAVING COUNT(SanPham.MaSP) >= 1 AND LoaiSP.TenLoaiSP NOT IN (N'Sản phẩm Gia Dụng')
+
+-- Query 7 Liệt kê số lượng nhân viên phân loại theo giới tính, quê quán và tuổi (cùng giới tính, quê quán và tuổi thì cùng nhóm)
+SELECT COUNT(*), NhanVien.Tuoi FROM NhanVien GROUP BY NhanVien.GioiTinh, NhanVien.QueQuan, NhanVien.Tuoi
+
+--Question 8 Liệt kê mã nhân viên, tên sản phẩm, loại sản phẩm của sản phẩm mà nhân viên đó đã bán cho mỗi một nhân viên
+
+--Question 9 Đếm số lượng nhân viên đã bán sản phẩm có mã sản phẩm là 'SP001'
+SELECT COUNT(*) FROM NhanVien INNER JOIN BanHang ON BanHang.MaNV = NhanVien.MaNV INNER JOIN SanPham ON BanHang.MaSP = SanPham.MaSP WHERE SanPham.MaSP = 'SP001'
+
+--Question 10 Đếm số lượng nhân viên có quê ở Hà Tĩnh từng bán các sản phẩm thuộc loại sản phẩm có tên là 'Bột giặt'
+SELECT COUNT(*) FROM NhanVien WHERE MaNV IN (
+SELECT NhanVien.MaNV FROM NhanVien INNER JOIN BanHang ON BanHang.MaNV = NhanVien.MaNV INNER JOIN SanPham ON  BanHang.MaSP = SanPham.MaSP INNER JOIN LoaiSP ON SanPham.MaLoaiSP = LoaiSP.MaLoaiSP WHERE NhanVien.QueQuan = N'Huế' AND LoaiSP.TenLoaiSP = N'Sản phẩm gia dụng'
+)
