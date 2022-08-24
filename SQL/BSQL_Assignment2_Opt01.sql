@@ -41,10 +41,8 @@ SELECT * FROM Trainee WHERE EtIQ + EtGmath >=20 AND EtIQ >=8 AND EtGmath >=8 AND
 -- select view
 SELECT * FROM EtPass
 
--- Select tổng các trainee pass theo tháng
-SELECT COUNT(MONTH(BirthDate)) as NumTrainee, MONTH(BirthDate) as Month FROM EtPass GROUP BY(MONTH(BirthDate)) ORDER BY [Month]
+-- Select tổng các trainee pass theo tháng sinh
+SELECT COUNT(MONTH(EtPass.BirthDate)), MONTH(EtPass.BirthDate) FROM EtPass GROUP BY MONTH(EtPass.BirthDate)
 
 -- Hien thi những Trainee có tên dài nhất
-SELECT * FROM Trainee WHERE LEN(FullName)  = (
-SELECT LEN(MAX(FullName)) FROM Trainee 
-)
+SELECT TOP 3 WITH TIES * FROM Trainee ORDER BY LEN(FullName) DESC

@@ -77,7 +77,7 @@ SELECT COUNT(Production.Product.ProductID) AS HasSubCategoryID FROM Production.P
 --Question 3 Có bao nhiêu Sản phẩm nằm trong mỗi Danh mục con?
 -- Câu trả lời cho điều này là có thể truy xuất được nếu bạn viết một truy vấn sử dụng hàm tổng hợp COUNT kết hợp với mệnh đề GROUP BY.
 -- Cột ProductSubcategoryID là một ứng cử viên để tạo nhóm hàng khi truy vấn bảng Sản phẩm.
-SELECT Product.ProductSubcategoryID AS HasSubCategoryID, COUNT(Product.ProductID) FROM Production.Product GROUP BY(ProductSubcategoryID)
+SELECT Product.ProductSubcategoryID AS HasSubCategoryID, COUNT(Product.ProductID) FROM Production.Product GROUP BY ROLLUP(ProductSubcategoryID)
 
 --Question 4 Một truy vấn không có mệnh đề WHERE và một truy vấn sử dụng mệnh đề WHERE. 
 -- Các hàng có NULL trong cột ProductSubcategoryID được coi là không thuộc bất kỳ danh mục con nào.

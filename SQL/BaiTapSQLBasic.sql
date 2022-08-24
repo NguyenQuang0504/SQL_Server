@@ -124,7 +124,6 @@ SELECT NhanVien.MaNV FROM NhanVien INNER JOIN BanHang ON BanHang.MaNV = NhanVien
 --Query 14 Hãy liệt kê MaSP, TênSP, Mã Loại SP, Giá Bán, Tên Loại SP của tất cả những sản phẩm đã có niêm yết giá bán
 SELECT SanPham.MaSP, SanPham.TenSP, SanPham.MaLoaiSP, SanPham.GiaBan, LoaiSP.TenLoaiSP FROM SanPham INNER JOIN LoaiSP ON SanPham.MaLoaiSP =LoaiSP.MaLoaiSP WHERE SanPham.GiaBan != null
 
-
 -- Query 15 Hãy liệt kê MãNV, Họ tên NV, Giới Tính, Quê Quán của nhân viên và mã sản phẩm, tên sản phẩm, loại sản phẩm, tên loại sản phẩm, 
 --số lượng đã bán của tất cả các những nhân viên đã từng bán được hàng.
 SELECT NhanVien.MaNV, NhanVien.HoTenNV, NhanVien.GioiTinh, NhanVien.QueQuan, SanPham.MaSP, SanPham.TenSP, LoaiSP.MaLoaiSP, LoaiSP.TenLoaiSP, BanHang.SoLuong FROM NhanVien INNER JOIN BanHang ON NhanVien.MaNV = BanHang.MaNV INNER JOIN SanPham ON SanPham.MaSP = BanHang.MaSP INNER JOIN LoaiSP ON LoaiSP.MaLoaiSP =SanPham.MaLoaiSP
@@ -150,7 +149,7 @@ SELECT * FROM NhanVien WHERE Tuoi BETWEEN 25 AND 35
 
 
 -- BT2
---Question 1Liệt kê mã loại sản phẩm và số lượng sản phẩm của từng loại sản phẩm
+-- Question 1Liệt kê mã loại sản phẩm và số lượng sản phẩm của từng loại sản phẩm
 SELECT SanPham.MaLoaiSP, COUNT(SanPham.MaLoaiSP) FROM SanPham INNER JOIN LoaiSP ON SanPham.MaLoaiSP = LoaiSP.MaLoaiSP GROUP BY(SanPham.MaLoaiSP)
 
 -- Question 2Liệt kê mã nhân viên, họ tên nhân viên và mã sản phẩm của những sản phẩm mà nhân viên đó đã bán
@@ -159,10 +158,10 @@ SELECT NhanVien.MaNV, NhanVien.HoTenNV, SanPham.MaSP FROM NhanVien INNER JOIN Ba
 -- Question 3 Liệt kê mã nhân viên, họ tên nhân viên và mã sản phẩm của những sản phẩm mà nhân viên đó đã bán
 SELECT NhanVien.MaNV, NhanVien.HoTenNV, SanPham.MaSP FROM NhanVien LEFT JOIN BanHang ON NhanVien.MaNV = BanHang.MaNV LEFT JOIN SanPham ON BanHang.MaSP = SanPham.MaSP ORDER BY NhanVien.MaNV
 
---Question 4 Liệt kê mã sản phẩm, tên sản phẩm, mã loại sản phẩm, tên loại sản phẩm của tất cả các sản phẩm hiện có
+-- Question 4 Liệt kê mã sản phẩm, tên sản phẩm, mã loại sản phẩm, tên loại sản phẩm của tất cả các sản phẩm hiện có
 SELECT SanPham.MaSP, SanPham.TenSP, LoaiSP.MaLoaiSP, LoaiSP.TenLoaiSP FROM SanPham INNER JOIN LoaiSP ON SanPham.MaLoaiSP = LoaiSP.MaLoaiSP
 
---Question 5 Liệt kê những nhân viên đã từng bán được ít nhất 10 sản phẩm
+-- Question 5 Liệt kê những nhân viên đã từng bán được ít nhất 10 sản phẩm
 SELECT DISTINCT NhanVien.MaNV, NhanVien.HoTenNV FROM NhanVien INNER JOIN BanHang ON NhanVien.MaNV = BanHang.MaNV INNER JOIN SanPham ON BanHang.MaSP = SanPham.MaSP GROUP BY NhanVien.MaNV, NhanVien.HoTenNV  HAVING SUM(BanHang.SoLuong) >=10 ORDER BY NhanVien.MaNV
 
 --Query 6 Liệt kê các loại sản phẩm có ít nhất 20 sản phẩm, ngoại trừ loại sản phẩm: Kem dưỡng da
